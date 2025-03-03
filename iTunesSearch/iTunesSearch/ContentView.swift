@@ -22,7 +22,7 @@ struct ContentView: View {
     
     var body: some View {
         List(results, id: \.trackId) { item in
-            VStack(alignment: .leading){
+            VStack(alignment: .leading) {
                 Text(item.trackName)
                     .font(.headline)
                 
@@ -35,7 +35,7 @@ struct ContentView: View {
     }
     
     func loadData() async {
-        guard let url = URL(string: "https://itunes.apple.com/search?term=taylor+swift&entity=song") else{
+        guard let url = URL(string: "https://itunes.apple.com/search?term=taylor+swift&entity=song") else {
             print("Invalid URL")
             return
         }
@@ -43,13 +43,12 @@ struct ContentView: View {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             
-            if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data){
+            if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
                 results = decodedResponse.results
             }
         } catch {
             print("Invalid data")
         }
-        
     }
 }
 

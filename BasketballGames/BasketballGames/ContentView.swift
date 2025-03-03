@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct Game: Codable {
     var id: Int
     var team: String
@@ -26,15 +25,14 @@ struct ContentView: View {
     @State private var games: [Game] = []
     
     var body: some View {
-        
-        NavigationView{
+        NavigationView {
             List(games, id: \.id) { game in
-                VStack(alignment: .leading){
+                VStack(alignment: .leading) {
                     Text("\(game.team)'s Game")
                         .font(.headline)
                     
                     Text("Opponent: \(game.opponent)")
-                    HStack{
+                    HStack {
                         Text("Score: UNC \(game.score.unc)")
                         Spacer()
                         Text("-")
@@ -52,13 +50,13 @@ struct ContentView: View {
             }
             .navigationTitle("UNC Basketball Games")
         }
-            .task {
+        .task {
             await loadData()
         }
     }
     
     func loadData() async {
-        guard let url = URL(string: "https://api.samuelshi.com/uncbasketball") else{
+        guard let url = URL(string: "https://api.samuelshi.com/uncbasketball") else {
             print("Invalid URL")
             return
         }
@@ -66,13 +64,12 @@ struct ContentView: View {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             
-            if let decodedResponse = try? JSONDecoder().decode([Game].self, from: data){
+            if let decodedResponse = try? JSONDecoder().decode([Game].self, from: data) {
                 games = decodedResponse
             }
         } catch {
             print("Invalid data")
         }
-        
     }
 }
 
